@@ -1,0 +1,76 @@
+/* frontend/src/App.css */
+
+/* ============================= */
+/* ROOT WRAPPER                  */
+/* ============================= */
+#root {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+}
+
+/* ============================= */
+/* PAGE CENTERING                */
+/* ============================= */
+.page-center {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* ============================= */
+/* MAIN DASHBOARD CARD           */
+/* ============================= */
+.dashboard {
+  width: 100%;
+  max-width: 900px;
+  background-color: var(--color-surface);
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* ============================= */
+/* HEADER                        */
+/* ============================= */
+.app-header-container {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: var(--color-surface);
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* ============================= */
+/* TABLE (SWEETS LIST)           */
+/* ============================= */
+.sweets-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.sweets-table th,
+.sweets-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.sweets-table th {
+  background-color: #2f2f2f;
+}
+
+.sweets-table tr:hover {
+  background-color: rgba(242, 101, 34, 0.12);
+}
+
+/* ============================= */
+/* SEARCH BAR                    */
+/* ============================= */
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}

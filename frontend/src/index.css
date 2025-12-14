@@ -1,0 +1,103 @@
+/* frontend/src/index.css */
+
+/* ============================= */
+/* GLOBAL THEME & VARIABLES      */
+/* ============================= */
+:root {
+  /* Dark Theme Colors */
+  --color-background: #1e1e1e;
+  --color-surface: #252526;
+  --color-text-light: #dcdcdc;
+  --color-text-dark: #1a1a1a;
+
+  /* Candy Shop Accent Colors */
+  --color-primary: #f26522;   /* Orange */
+  --color-secondary: #582f25; /* Brown */
+  --color-success: #6c9940;
+  --color-danger: #cf6679;
+  --color-border: #444;
+
+  /* Fonts */
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* ============================= */
+/* GLOBAL RESET & BODY           */
+/* ============================= */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-background);
+  color: var(--color-text-light);
+}
+
+/* ============================= */
+/* GLOBAL TEXT & LINKS           */
+/* ============================= */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+a:hover {
+  color: #ff7f41;
+}
+
+h1, h2, h3 {
+  color: var(--color-primary);
+}
+
+/* ============================= */
+/* GLOBAL BUTTONS                */
+/* ============================= */
+button {
+  border-radius: 8px;
+  border: none;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.25s;
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+button:hover {
+  background-color: #ff7f41;
+}
+
+/* Button Variants */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: var(--color-text-light);
+}
+
+.btn-restock {
+  background-color: var(--color-success);
+  color: var(--color-background);
+}
+
+.btn-management {
+  background-color: var(--color-surface);
+  color: var(--color-text-light);
+  border: 1px solid var(--color-border);
+}
+
+/* ============================= */
+/* INPUTS                        */
+/* ============================= */
+input,
+select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-light);
+}
