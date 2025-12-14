@@ -68,3 +68,18 @@ sweet-shop-management/
 │   │   └── api.js
 │   └── package.json
 └── README.md
+
+### Login Page
+![Login Page](images/login.png)
+### register page
+![register Page](images/register.png)
+### userdisplay
+![user display Page](images/userdisplay.png)
+### user display
+![user display Page](images/userdisplay2.png)
+### search
+![search Page](images/search.png)
+### admin panel Page
+![admin panel Page](images/adminpanel.png)
+
+
