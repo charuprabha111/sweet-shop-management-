@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/#values
 """
 
 from pathlib import Path
+# ADDED datetime import here because it is often needed for token lifetimes
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -64,7 +66,7 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'corsheaders.middleware.CorsMiddleware',    # <-- MUST be here
+    'corsheaders.middleware.CorsMiddleware',     # <-- MUST be here
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -155,9 +157,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SIMPLE_JWT = {
     # We assume your API app is named 'api', so the function must be at 'api.utils.get_user_data'
     'USER_DATA_CLAIM': 'api.utils.get_user_data',
-    
+
     # Standard practice to use the 'id' field for user identification in the token
     'USER_ID_FIELD': 'id',
+
+    # CRITICAL FIX: Point to the CustomTokenObtainPairSerializer you created in api/serializers.py
+    'TOKEN_OBTAIN_SERIALIZER': 'api.serializers.CustomTokenObtainPairSerializer',
     
-    'TOKEN_OBTAIN_SERIALIZER': 'rest_framework_simplejwt.serializers.TokenObtainPairSerializer',
+    # You should also ensure the token lifetimes are defined, like this:
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }

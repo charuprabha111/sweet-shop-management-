@@ -1,6 +1,11 @@
+// frontend/src/Login.jsx (FINAL CORRECTED VERSION)
+
 import React, { useState } from 'react';
 import { loginUser } from './api';
 import { Link } from 'react-router-dom';
+
+// CRITICAL IMPORT: Used to read the information inside the JWT token
+import { jwtDecode } from 'jwt-decode'; 
 
 // ✅ IMAGE IS IN src/sweet.jpg (same folder level)
 import sweetImg from './sweet.jpg';
@@ -20,8 +25,21 @@ export default function Login({ onLoginSuccess }) {
         e.preventDefault();
         setError('');
         try {
+            // 1. Send credentials to the backend (this returns access and refresh tokens)
             const response = await loginUser(formData);
-            onLoginSuccess(response.is_admin);
+            
+            // 2. Decode the access token to read the admin flag
+            const decodedToken = jwtDecode(response.access);
+
+            // 3. Extract the 'is_superuser' flag (set in the Django backend fix)
+            const isAdmin = decodedToken.is_superuser;
+
+            // 4. Save the token to local storage for future API calls
+            localStorage.setItem("token", response.access);
+            
+            // 5. Pass the extracted boolean admin status to App.jsx
+            onLoginSuccess(isAdmin); 
+
         } catch (e) {
             setError(e.message || 'Login failed. Please check your credentials.');
         }

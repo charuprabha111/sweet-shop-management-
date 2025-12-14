@@ -182,7 +182,8 @@ export async function deleteSweet(id) {
 export async function searchSweets(query) {
     const token = getToken();
     
-    const url = `${API_BASE}/sweets/search?q=${encodeURIComponent(query)}`;
+    // CORRECT: Uses the base endpoint and standard DRF 'search' parameter.
+    const url = `${API_BASE}/sweets/?search=${encodeURIComponent(query)}`;
 
     const res = await fetch(url, {
         method: "GET",
@@ -212,11 +213,12 @@ export async function purchaseSweet(id) {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}`,
+            // FINAL FIX: Removed Content-Type and body to prevent 400 Bad Request on empty payload.
         },
     });
 
     if (!res.ok) {
-        await handleApiError(res, "Purchase failed.");
+        await handleApiError(res, "Purchase failed. Sweet may be out of stock or ID is invalid.");
     }
 
     return true; // Assuming a successful status code means success

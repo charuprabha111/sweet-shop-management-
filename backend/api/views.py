@@ -7,7 +7,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .models import Sweet
 from django.db import transaction
-from django.db.models import Q # <--- NEW IMPORT: Needed for OR logic in search
+from django.db.models import Q 
+from rest_framework import filters # <-- NEW: Import for DRF SearchFilter
 
 class RegisterView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -17,7 +18,6 @@ class RegisterView(APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         refresh = RefreshToken.for_user(user)
-        # Note: Depending on your setup, you might want to return the token here too
         return Response({"access": str(refresh.access_token)}, status=status.HTTP_201_CREATED)
 
 class LoginView(APIView):
@@ -35,42 +35,29 @@ class LoginView(APIView):
 
 class SweetViewSet(viewsets.ModelViewSet):
     """
-    Basic CRUD for sweets. Requires authentication for all actions.
-    Supports broad search via 'q' parameter, and existing specific filters.
+    Basic CRUD for sweets. Implements standard DRF SearchFilter.
     """
 
     queryset = Sweet.objects.all()
     serializer_class = SweetSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    # ---------------------------------------------------------------------
+    # CRITICAL FIXES FOR SEARCH
+    # 1. Use the standard DRF SearchFilter
+    filter_backends = [filters.SearchFilter]
+    
+    # 2. Define the fields to search across (aligns with frontend ?search=)
+    search_fields = ['name', 'category', 'price'] 
+    # ---------------------------------------------------------------------
+
     def get_queryset(self):
         qs = Sweet.objects.all()
         
-        # 1. BROAD SEARCH via 'q' parameter (for frontend Search.jsx)
-        query = self.request.query_params.get('q')
-        
-        if query:
-            # Try to convert query to a number for price search
-            try:
-                price_query = float(query)
-                is_numeric = True
-            except (ValueError, TypeError):
-                is_numeric = False
-            
-            # Filter by name (contains) OR category (contains)
-            q_objects = Q(name__icontains=query) | Q(category__icontains=query)
-            
-            # If the query is a number, include price lookup
-            if is_numeric:
-                q_objects |= Q(price=price_query)
+        # DRF's filter_backends will automatically process the 'search' query parameter.
+        # We only keep the specific filters below.
 
-            qs = qs.filter(q_objects)
-            
-            # If a broad search is performed, we return the results immediately
-            # to prevent specific filters from being applied on top of the search result.
-            return qs 
-
-        # 2. EXISTING SPECIFIC FILTERS (Only run if NO broad 'q' search is performed)
+        # 2. EXISTING SPECIFIC FILTERS (These run after the main search filter)
         name = self.request.query_params.get('name')
         category = self.request.query_params.get('category')
         min_price = self.request.query_params.get('min_price')
@@ -92,15 +79,18 @@ class SweetViewSet(viewsets.ModelViewSet):
                 pass
         return qs
 
-    @action(detail=True, methods=['post'], url_path='purchase')
+    @action(detail=True, methods=['post']) # FINAL FIX: Removed url_path='purchase' for cleaner routing
     def purchase(self, request, pk=None):
         try:
             with transaction.atomic():
                 sweet = Sweet.objects.select_for_update().get(pk=pk)
+                
                 if sweet.quantity <= 0:
                     return Response({"detail": "Out of stock"}, status=status.HTTP_400_BAD_REQUEST)
+                
                 sweet.quantity -= 1
                 sweet.save()
+                
                 serializer = SweetSerializer(sweet)
                 return Response(serializer.data, status=status.HTTP_200_OK)
         except Sweet.DoesNotExist:
