@@ -146,10 +146,7 @@ In line with the AI Usage Policy for this kata, I leveraged **Gemini** throughou
 | **Gemini** | **Implementing Standardized Search:** Guided the process of replacing custom, complex `Q` object search logic with the robust, standard Django REST Framework's `SearchFilter`. | Ensured the final search implementation was professionally compliant with DRF best practices, improving performance and maintainability. |
 | **Gemini** | **Reviewing Authentication Flow:** Confirmed the necessary data (`is_admin: true`) was being correctly returned by the `LoginView` to the frontend, resolving a critical role-assignment error upon user login. | Improved security and role-separation integrity by verifying the data transmitted during the authentication process. |
 
-### AI Co-authorship in Commits
-As required by the assignment guidelines, I have included a co-author trailer in the commit message for every change where AI assistance was directly used for code generation, complex debugging, or architectural guidance.
 
----
 
 ## 🖼️ Screenshots
 
