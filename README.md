@@ -3,6 +3,12 @@
 A full-stack **Sweet Shop Management System** built as part of an **AI Kata / TDD Assignment**. This project demonstrates backend API development, frontend integration, secure authentication, role-based access, and adherence to modern development practices, including the transparent use of AI tools.
 
 ---
+## 🚀 Live Demo
+
+🔗 https://sweet-shop-management-vercel.vercel.app
+
+> **Note:** Currently, the **frontend is deployed** on Vercel for demonstration purposes.  
+> Backend functionalities such as admin stock updates, inventory reduction, and order persistence are implemented and tested locally.
 
 ## 🚀 Features
 
